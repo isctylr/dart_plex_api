@@ -1,4 +1,4 @@
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 abstract class PlexMediaType {
   static PlexMediaType get movie => PlexMovie();
@@ -19,39 +19,39 @@ abstract class PlexMediaType {
 
   static PlexMediaType fromTypeString(String type) {
     switch (type) {
-      case "movie":
+      case 'movie':
         return PlexMovie();
-      case "show":
+      case 'show':
         return PlexShow();
-      case "season":
+      case 'season':
         return PlexSeason();
-      case "episode":
+      case 'episode':
         return PlexEpisode();
-      case "trailer":
+      case 'trailer':
         return PlexTrailer();
-      case "comic":
+      case 'comic':
         return PlexComic();
-      case "person":
+      case 'person':
         return PlexPerson();
-      case "artist":
+      case 'artist':
         return PlexArtist();
-      case "album":
+      case 'album':
         return PlexAlbum();
-      case "track":
+      case 'track':
         return PlexTrack();
-      case "photoAlbum":
+      case 'photoAlbum':
         return PlexPhotoAlbum();
-      case "picture":
+      case 'picture':
         return PlexPicture();
-      case "photo":
+      case 'photo':
         return PlexPhoto();
-      case "clip":
+      case 'clip':
         return PlexClip();
-      case "playlistItem":
+      case 'playlistItem':
         return PlexPlaylistItem();
       default:
         throw UnknownMediaTypeException(
-            "Cannot construct PlexMediaType from unknown type string!");
+            'Cannot construct PlexMediaType from unknown type string!');
     }
   }
 }

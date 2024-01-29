@@ -1,9 +1,8 @@
-import "package:meta/meta.dart";
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexRootRoute extends PlexRoute {
   PlexRootRoute({
-    @required PlexConnection connection,
+    required PlexConnection connection,
   })  : assert(connection != null),
         super(
           connection: connection,
@@ -11,23 +10,23 @@ class PlexRootRoute extends PlexRoute {
         );
 
   PlexLibraryRoute get library => PlexLibraryRoute(
-        connection: this.connection,
-        previousPath: this.route,
+        connection: connection,
+        previousPath: route,
       );
 
   PlexServersRoute get servers => PlexServersRoute(
-        connection: this.connection,
-        previousPath: this.route,
+        connection: connection,
+        previousPath: route,
       );
 
   PlexClientsRoute get clients => PlexClientsRoute(
-        connection: this.connection,
-        previousPath: this.route,
+        connection: connection,
+        previousPath: route,
       );
 
   @override
   Future<PlexRoot> request() async => PlexRoot.fromJson(
-        connection: this.connection,
-        json: (await this.connection.requestJson(this.route))["MediaContainer"],
+        connection: connection,
+        json: (await connection.requestJson(route))['MediaContainer'],
       );
 }

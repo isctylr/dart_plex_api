@@ -1,14 +1,13 @@
-import "package:meta/meta.dart";
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexLibrarySectionRoute extends PlexRoute {
   final String typeString;
 
   PlexLibrarySectionRoute({
-    @required PlexConnection connection,
-    @required String key,
-    this.typeString,
-    String previousPath,
+    required PlexConnection connection,
+    required String key,
+    required this.typeString,
+    String? previousPath,
   })  : assert(key != null && key != ""),
         super(
           connection: connection,
@@ -23,27 +22,23 @@ class PlexLibrarySectionRoute extends PlexRoute {
     PlexObject section;
     PlexMediaType type;
 
-    try {
-      type = PlexMediaType.fromTypeString(typeString);
-    } finally {
-      switch (type.runtimeType) {
-        case PlexArtist:
-          section = PlexArtistSection.fromJson(
-            connection: this.connection,
-            json: (await this
-                .connection
-                .requestJson(this.route))["MediaContainer"],
-          );
-          break;
-        default:
-          section = PlexRawObject.fromJson(
-            connection: this.connection,
-            json: (await this
-                .connection
-                .requestJson(this.route))["MediaContainer"],
-          );
-      }
+    // try {
+    type = PlexMediaType.fromTypeString(typeString);
+    // } finally {
+    switch (type.runtimeType) {
+      case PlexArtist:
+        section = PlexArtistSection.fromJson(
+          connection: connection,
+          json: (await connection.requestJson(route))['MediaContainer'],
+        );
+        break;
+      default:
+        section = PlexRawObject.fromJson(
+          connection: connection,
+          json: (await connection.requestJson(route))['MediaContainer'],
+        );
     }
+    // }
 
     return section;
   }

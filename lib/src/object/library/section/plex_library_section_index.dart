@@ -1,18 +1,17 @@
-import "package:meta/meta.dart";
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexLibrarySectionIndex extends PlexObject {
-  static final path = "sections";
+  static final path = 'sections';
 
-  final bool allowSync;
-  final String identifier;
-  final String mediaTagPrefix;
-  final int mediaTagVersion;
-  final String title1;
-  final List<PlexLibrarySection> directory;
+  final bool? allowSync;
+  final String? identifier;
+  final String? mediaTagPrefix;
+  final int? mediaTagVersion;
+  final String? title1;
+  final List<PlexLibrarySection>? directory;
 
   PlexLibrarySectionIndex({
-    @required PlexConnection connection,
+    required PlexConnection connection,
     this.allowSync,
     this.identifier,
     this.mediaTagPrefix,
@@ -25,34 +24,34 @@ class PlexLibrarySectionIndex extends PlexObject {
 
   @override
   PlexLibrarySectionIndex.fromJson({
-    @required PlexConnection connection,
-    @required dynamic json,
+    required PlexConnection connection,
+    required dynamic json,
   })  : assert(json != null),
-        allowSync = json["allowSync"],
-        identifier = json["identifier"],
-        mediaTagPrefix = json["mediaTagPrefix"],
-        mediaTagVersion = json["mediaTagVersion"],
-        title1 = json["title1"],
-        directory = json["Directory"] != null
+        allowSync = json['allowSync'],
+        identifier = json['identifier'],
+        mediaTagPrefix = json['mediaTagPrefix'],
+        mediaTagVersion = json['mediaTagVersion'],
+        title1 = json['title1'],
+        directory = json['Directory'] != null
             ? List.generate(
-                (json["Directory"] as List<dynamic>).length,
+                (json['Directory'] as List<dynamic>).length,
                 (int index) => PlexLibrarySection.fromJson(
-                      connection: connection,
-                      json: json["Directory"][index],
-                    ),
+                  connection: connection,
+                  json: json['Directory'][index],
+                ),
               )
-            : null,
+            : List.empty(),
         super(
           connection: connection,
         );
 
   @override
   Map<String, dynamic> toJson() => {
-        "allowSync": this.allowSync,
-        "identifier": this.identifier,
-        "mediaTagPrefix": this.mediaTagPrefix,
-        "mediaTagVersion": this.mediaTagVersion,
-        "title1": this.title1,
-        "directory": this.directory,
+        'allowSync': allowSync,
+        'identifier': identifier,
+        'mediaTagPrefix': mediaTagPrefix,
+        'mediaTagVersion': mediaTagVersion,
+        'title1': title1,
+        'directory': directory,
       };
 }

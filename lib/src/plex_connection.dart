@@ -1,11 +1,10 @@
-import "dart:convert";
+import 'dart:convert';
 
-import "package:meta/meta.dart";
-import "package:http/http.dart" as http;
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:http/http.dart' as http;
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexConnection {
-  PlexAuthorization _auth;
+  late PlexAuthorization _auth;
 
   String host;
   int port;
@@ -14,54 +13,54 @@ class PlexConnection {
 
   // TODO: Hash Password
   PlexConnection({
-    @required this.host,
-    @required this.port,
-    @required this.credentials,
-    this.headers,
+    required this.host,
+    required this.port,
+    required this.credentials,
+    required this.headers,
   })  : assert(host != null),
         assert(port != null),
         assert(credentials != null) {
-    if (this.headers == null) {
-      this.headers = PlexHeaders.fromCredentials(
-        clientIdentifier: "",
-        credentials: this.credentials,
+    if (headers == null) {
+      headers = PlexHeaders.fromCredentials(
+        clientIdentifier: '',
+        credentials: credentials,
       );
     } else {
-      this.headers.setCredentials(this.credentials);
+      headers.setCredentials(credentials);
     }
 
-    this._auth = PlexAuthorization(
+    _auth = PlexAuthorization(
       credentials: credentials,
       headers: headers,
     );
   }
 
   Future<PlexConnection> authorize() async {
-    dynamic user = await this._auth.authorize();
+    dynamic user = await _auth.authorize();
 
-    this.headers.token = user["authToken"] ?? user["authentication_token"];
+    headers.token = user['authToken'] ?? user['authentication_token'];
 
     return this;
   }
 
-  bool get authorized => this._auth.authorized && this.headers.token != null;
+  bool get authorized => _auth.authorized && headers.token != null;
 
   Uri get requestUri => Uri(
-        scheme: "http",
-        host: this.host,
-        port: this.port,
+        scheme: 'http',
+        host: host,
+        port: port,
       );
 
   Future<dynamic> requestJson(String route) async =>
       json.decode((await http.get(
         requestUri.replace(path: route),
-        headers: this.headers.toMap(),
+        headers: headers.toMap(),
       ))
           .body);
 
   Future<http.Response> requestRaw(String route) async => await http.get(
         requestUri.replace(path: route),
-        headers: this.headers.toMap(),
+        headers: headers.toMap(),
       );
 
   PlexRootRoute get root => PlexRootRoute(

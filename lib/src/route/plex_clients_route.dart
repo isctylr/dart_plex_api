@@ -1,10 +1,9 @@
-import "package:meta/meta.dart";
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexClientsRoute extends PlexRoute {
   PlexClientsRoute({
-    @required PlexConnection connection,
-    String previousPath,
+    required PlexConnection connection,
+    String? previousPath,
   })  : assert(connection != null),
         super(
           connection: connection,
@@ -14,8 +13,8 @@ class PlexClientsRoute extends PlexRoute {
 
   @override
   Future<List<PlexClient>> request() async =>
-      ((await connection.requestJson(PlexClient.path))["MediaContainer"]
-              ["Server"] as List<dynamic>)
+      ((await connection.requestJson(PlexClient.path))['MediaContainer']
+              ['Server'] as List<dynamic>)
           .map((dynamic rawServer) => PlexClient.fromJson(
                 connection: connection,
                 json: rawServer,

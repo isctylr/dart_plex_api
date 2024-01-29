@@ -1,10 +1,9 @@
-import "package:meta/meta.dart";
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexLibrarySectionIndexRoute extends PlexRoute {
   PlexLibrarySectionIndexRoute({
-    @required PlexConnection connection,
-    String previousPath,
+    required PlexConnection connection,
+    String? previousPath,
   }) : super(
           connection: connection,
           path: PlexLibrarySectionIndex.path,
@@ -12,26 +11,26 @@ class PlexLibrarySectionIndexRoute extends PlexRoute {
         );
 
   PlexLibrarySectionRoute get({
-    @required String key,
-    @required String typeString,
+    required String key,
+    required String typeString,
   }) =>
       PlexLibrarySectionRoute(
         connection: connection,
         key: key,
         typeString: typeString,
-        previousPath: this.route,
+        previousPath: route,
       );
 
   PlexAllLibrarySectionsRoute get all => PlexAllLibrarySectionsRoute(
         connection: connection,
         indexRoute: this,
-        previousPath: this.route,
+        previousPath: route,
       );
 
   @override
   Future<PlexLibrarySectionIndex> request() async =>
       PlexLibrarySectionIndex.fromJson(
-        connection: this.connection,
-        json: (await this.connection.requestJson(this.route))["MediaContainer"],
+        connection: connection,
+        json: (await connection.requestJson(route))['MediaContainer'],
       );
 }

@@ -1,18 +1,17 @@
-import "package:meta/meta.dart";
 import "package:dart_plex_api/dart_plex_api.dart";
 
 class PlexServer extends PlexObject {
   static final String path = "servers";
 
-  final String name;
-  final String host;
-  final String address;
-  final int port;
-  final String machineIdentifier;
-  final String version;
+  final String? name;
+  final String? host;
+  final String? address;
+  final int? port;
+  final String? machineIdentifier;
+  final String? version;
 
   PlexServer({
-    @required PlexConnection connection,
+    required PlexConnection connection,
     this.name,
     this.host,
     this.address,
@@ -25,26 +24,26 @@ class PlexServer extends PlexObject {
 
   @override
   PlexServer.fromJson({
-    @required PlexConnection connection,
-    @required dynamic json,
+    required PlexConnection connection,
+    required dynamic json,
   })  : assert(json != null),
-        this.name = json["name"],
-        this.host = json["host"],
-        this.address = json["address"],
-        this.port = json["port"],
-        this.machineIdentifier = json["machineIdentifier"],
-        this.version = json["version"],
+        name = json['name'],
+        host = json['host'],
+        address = json['address'],
+        port = json['port'],
+        machineIdentifier = json['machineIdentifier'],
+        version = json['version'],
         super(
           connection: connection,
         );
 
   @override
   Map<String, dynamic> toJson() => {
-        "name": this.name,
-        "host": this.host,
-        "address": this.address,
-        "port": this.port,
-        "machineIdentifier": this.machineIdentifier,
-        "version": this.version,
+        'name': name,
+        'host': host,
+        'address': address,
+        'port': port,
+        'machineIdentifier': machineIdentifier,
+        'version': version,
       };
 }

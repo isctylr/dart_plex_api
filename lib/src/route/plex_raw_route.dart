@@ -1,11 +1,10 @@
-import "package:meta/meta.dart";
 import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexRawRoute extends PlexRoute {
   PlexRawRoute({
-    @required PlexConnection connection,
-    String path,
-    String previousPath,
+    required PlexConnection connection,
+    required String path,
+    String? previousPath,
   })  : assert(connection != null),
         super(
           connection: connection,
@@ -15,7 +14,7 @@ class PlexRawRoute extends PlexRoute {
 
   @override
   Future<PlexRawObject> request() async => PlexRawObject.fromJson(
-        connection: this.connection,
-        json: (await this.connection.requestJson(route))["MediaContainer"],
+        connection: connection,
+        json: (await connection.requestJson(route))['MediaContainer'],
       );
 }

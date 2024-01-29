@@ -22,15 +22,15 @@ export 'src/object/library/section/plex_library_section.dart';
 export 'src/object/library/section/plex_artist_section.dart';
 
 // Route
-export "src/route/plex_route.dart";
-export "src/route/plex_raw_route.dart";
-export "src/route/plex_root_route.dart";
-export "src/route/plex_servers_route.dart";
-export "src/route/plex_clients_route.dart";
-export "src/route/library/plex_library_route.dart";
-export "src/route/library/plex_library_section_index_route.dart";
+export 'src/route/plex_route.dart';
+export 'src/route/plex_raw_route.dart';
+export 'src/route/plex_root_route.dart';
+export 'src/route/plex_servers_route.dart';
+export 'src/route/plex_clients_route.dart';
+export 'src/route/library/plex_library_route.dart';
+export 'src/route/library/plex_library_section_index_route.dart';
 export 'src/route/library/plex_all_library_sections_route.dart';
-export "src/route/library/plex_library_section_route.dart";
+export 'src/route/library/plex_library_section_route.dart';
 
 // Media Types
 export 'src/media_type/plex_media_type.dart';

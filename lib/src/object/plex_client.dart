@@ -1,23 +1,22 @@
-import "package:meta/meta.dart";
-import "package:dart_plex_api/dart_plex_api.dart";
+import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexClient extends PlexObject {
-  static final String path = "clients";
+  static final String path = 'clients';
 
-  final String name;
-  final String host;
-  final String address;
-  final int port;
-  final String machineIdentifier;
-  final String version;
-  final String protocol;
-  final String product;
-  final String deviceClass;
-  final String protocolVersion;
-  final String protocolCapabilities;
+  final String? name;
+  final String? host;
+  final String? address;
+  final int? port;
+  final String? machineIdentifier;
+  final String? version;
+  final String? protocol;
+  final String? product;
+  final String? deviceClass;
+  final String? protocolVersion;
+  final String? protocolCapabilities;
 
   PlexClient({
-    @required PlexConnection connection,
+    required PlexConnection connection,
     this.name,
     this.host,
     this.address,
@@ -35,36 +34,36 @@ class PlexClient extends PlexObject {
 
   @override
   PlexClient.fromJson({
-    @required PlexConnection connection,
-    @required dynamic json,
+    required PlexConnection connection,
+    required dynamic json,
   })  : assert(json != null),
-        this.name = json["name"],
-        this.host = json["host"],
-        this.address = json["address"],
-        this.port = json["port"],
-        this.machineIdentifier = json["machineIdentifier"],
-        this.version = json["version"],
-        this.protocol = json["protocol"],
-        this.product = json["product"],
-        this.deviceClass = json["deviceClass"],
-        this.protocolVersion = json["protocolVersion"],
-        this.protocolCapabilities = json["protocolCapabilities"],
+        name = json['name'],
+        host = json['host'],
+        address = json['address'],
+        port = json['port'],
+        machineIdentifier = json['machineIdentifier'],
+        version = json['version'],
+        protocol = json['protocol'],
+        product = json['product'],
+        deviceClass = json['deviceClass'],
+        protocolVersion = json['protocolVersion'],
+        protocolCapabilities = json['protocolCapabilities'],
         super(
           connection: connection,
         );
 
   @override
   Map<String, dynamic> toJson() => {
-        "name": this.name,
-        "host": this.host,
-        "address": this.address,
-        "port": this.port,
-        "machineIdentifier": this.machineIdentifier,
-        "version": this.version,
-        "protocol": this.protocol,
-        "product": this.product,
-        "deviceClass": this.deviceClass,
-        "protocolVersion": this.protocolVersion,
-        "protocolCapabilities": this.protocolCapabilities,
+        'name': name,
+        'host': host,
+        'address': address,
+        'port': port,
+        'machineIdentifier': machineIdentifier,
+        'version': version,
+        'protocol': protocol,
+        'product': product,
+        'deviceClass': deviceClass,
+        'protocolVersion': protocolVersion,
+        'protocolCapabilities': protocolCapabilities,
       };
 }
