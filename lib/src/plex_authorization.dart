@@ -4,8 +4,14 @@ import 'package:http/http.dart' as http;
 import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexAuthorization {
-  Uri _authEndpoint = Uri.https('plex.tv', '/users/sign_in.json');
-  PlexCredentials credentials;
+  // For getting a user via user/pw
+  final Uri _authEndpoint = Uri.https('plex.tv', '/users/sign_in.json');
+  // For getting a user with a woken
+  final Uri _userEndpoint = Uri.https('plex.tv', '/api/v2/user');
+
+  PlexCredentials? credentials;
+  PlexPinCredentials? pinCredentials;
+
   PlexHeaders headers;
 
   dynamic _user;
@@ -13,28 +19,64 @@ class PlexAuthorization {
   PlexAuthorization({
     required this.credentials,
     required this.headers,
-  })  : assert(credentials != null),
-        assert(headers != null) {
-    headers.setCredentials(credentials);
+  }) {
+    headers.setCredentials(credentials!);
+  }
+
+  PlexAuthorization._pinCredentials({
+    required this.headers,
+  });
+
+  static Future<PlexAuthorization> pinAuthorization(PlexHeaders headers) async {
+    var auth = PlexAuthorization._pinCredentials(headers: headers);
+    var pinCred = PlexPinCredentials.createPin(headers);
+
+    auth.pinCredentials = await pinCred;
+
+    return auth;
   }
 
   Future<dynamic> authorize() async {
-    var response = await http.post(
-      _authEndpoint,
-      headers: headers.toMap(),
-    );
+    if (credentials != null) {
+      // Created via original way - user/password
+      var response = await http.post(
+        _authEndpoint,
+        headers: headers.toMap(),
+      );
 
-    dynamic result = json.decode(response.body);
+      dynamic result = json.decode(response.body);
 
-    var error = result['error'];
+      var error = result['error'];
 
-    if (error != null) {
-      throw getException(error);
+      if (error != null) {
+        throw getException(error);
+      }
+
+      _user = result['user'];
+
+      return _user;
+    } else if (pinCredentials != null) {
+      // Created with pin signin. Get/set auth token & user
+      var token = await pinCredentials!.getToken(headers);
+      headers.token = token;
+
+      var response = await http.post(
+        _userEndpoint,
+        headers: headers.toMap(),
+      );
+
+      dynamic result = json.decode(response.body);
+
+      var error = result['error'];
+
+      if (error != null) {
+        throw getException(error);
+      }
+
+      _user = result;
+
+      return _user;
     }
-
-    _user = result['user'];
-
-    return _user;
   }
 
   bool get authorized => _user != null;

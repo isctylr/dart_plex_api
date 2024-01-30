@@ -8,31 +8,53 @@ class PlexConnection {
 
   String host;
   int port;
-  PlexCredentials credentials;
+  PlexCredentials? credentials;
+  PlexPinCredentials? pinCredentials;
   PlexHeaders headers;
 
-  // TODO: Hash Password
   PlexConnection({
     required this.host,
     required this.port,
     required this.credentials,
     required this.headers,
-  })  : assert(host != null),
-        assert(port != null),
-        assert(credentials != null) {
+  }) {
     if (headers == null) {
-      headers = PlexHeaders.fromCredentials(
+      headers = PlexHeaders.fromUserCredentials(
         clientIdentifier: '',
-        credentials: credentials,
+        credentials: credentials!,
       );
     } else {
-      headers.setCredentials(credentials);
+      headers.setCredentials(credentials!);
     }
 
     _auth = PlexAuthorization(
-      credentials: credentials,
+      credentials: credentials!,
       headers: headers,
     );
+  }
+
+  static Future<PlexConnection> withPin(String host, int port,
+      PlexPinCredentials pinCredentials, PlexHeaders headers) async {
+    var conn = PlexConnection._withPin(
+        host: host,
+        port: port,
+        pinCredentials: pinCredentials,
+        headers: headers);
+
+    await conn._setPinAuth();
+
+    return conn;
+  }
+
+  PlexConnection._withPin({
+    required this.host,
+    required this.port,
+    required this.pinCredentials,
+    required this.headers,
+  });
+
+  Future<void> _setPinAuth() async {
+    _auth = await PlexAuthorization.pinAuthorization(headers);
   }
 
   Future<PlexConnection> authorize() async {

@@ -5,6 +5,7 @@ export 'src/plex_connection.dart';
 export 'src/plex_credentials.dart';
 export 'src/plex_headers.dart';
 export 'src/plex_authorization.dart';
+export 'src/plex_pin.dart';
 
 // Object
 export 'src/object/plex_object.dart';
