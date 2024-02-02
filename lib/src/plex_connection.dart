@@ -33,6 +33,8 @@ class PlexConnection {
     );
   }
 
+  static Future<PlexConnection> withResource()
+
   static Future<PlexConnection> withPin(String host, int port,
       PlexPinCredentials pinCredentials, PlexHeaders headers) async {
     var conn = PlexConnection._withPin(

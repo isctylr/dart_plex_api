@@ -76,6 +76,8 @@ class PlexAuthorization {
       _user = result;
 
       return _user;
+    } else {
+      throw UnknownPlexException('Authorizing without setting credentials');
     }
   }
 
