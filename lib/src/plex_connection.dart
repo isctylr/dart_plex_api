@@ -13,7 +13,7 @@ class PlexConnection {
   int? port;
   String? scheme = 'http';
   PlexCredentials? credentials;
-  PlexPinCredentials? pinCredentials;
+  // PlexPinCredentials? pinCredentials;
   PlexHeaders headers;
 
   PlexConnection({
@@ -42,13 +42,13 @@ class PlexConnection {
       {String? host,
       int? port,
       String? scheme,
-      required PlexPinCredentials pinCredentials,
+      // required PlexPinCredentials pinCredentials,
       required PlexHeaders headers}) async {
     var conn = PlexConnection._withPin(
         host: host,
         port: port,
         scheme: scheme,
-        pinCredentials: pinCredentials,
+        // pinCredentials: pinCredentials,
         headers: headers);
 
     await conn._setPinAuth();
@@ -60,7 +60,7 @@ class PlexConnection {
     this.host,
     this.port,
     this.scheme,
-    required this.pinCredentials,
+    // required this.pinCredentials,
     required this.headers,
   });
 
