@@ -10,7 +10,7 @@ class PlexPinCredentials {
   late String token;
 
   final Uri _genPinEndpoint =
-      Uri.https('plex.tv', '/api/v2/pins.json', {'strong': true});
+      Uri.https('plex.tv', '/api/v2/pins.json', {'strong': 'true'});
 
   PlexPinCredentials._init();
 
