@@ -10,7 +10,7 @@ class PlexResource {
   final String? accessToken;
   final String? relay;
   final String? httpsRequired;
-  final List<PlexResourceConnection>? connections;
+  late final List<PlexResourceConnection>? connections;
 
   PlexResource({
     this.name,
@@ -26,12 +26,36 @@ class PlexResource {
     this.httpsRequired,
     this.connections,
   });
+
+  PlexResource.fromJson({dynamic json})
+      : assert(json != null),
+        name = json['name'],
+        product = json['product'],
+        productVersion = json['productVersion'],
+        platform = json['platform'],
+        platformVersion = json['platformVersion'],
+        device = json['device'],
+        provides = json['provides'] != null
+            ? json['provides'].toString().split(',')
+            : List.empty(),
+        publicAddress = json['publicAddress'],
+        accessToken = json['accessToken'],
+        relay = json['relay'],
+        httpsRequired = json['httpsRequired'],
+        connections = json['connections'] != null
+            ? List.generate(
+                (json['connections'] as List<dynamic>).length,
+                (int index) => PlexResourceConnection.fromJson(
+                  json: json['connections'][index],
+                ),
+              )
+            : List.empty();
 }
 
 class PlexResourceConnection {
   final String protocol;
   final String address;
-  final String port;
+  final int port;
   final String uri;
   final String local;
   final String relay;
@@ -45,4 +69,14 @@ class PlexResourceConnection {
       required this.local,
       required this.relay,
       required this.IPv6});
+
+  PlexResourceConnection.fromJson({dynamic json})
+      : assert(json != null),
+        protocol = json['protocol'],
+        address = json['address'],
+        port = json['port'],
+        uri = json['uri'],
+        local = json['local'],
+        relay = json['relay'],
+        IPv6 = json['IPv6'];
 }

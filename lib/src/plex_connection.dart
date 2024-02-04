@@ -4,17 +4,22 @@ import 'package:http/http.dart' as http;
 import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexConnection {
-  late PlexAuthorization _auth;
+  final Uri _resourceEndpoint = Uri.https('plex.tv', '/api/v2/resources');
 
-  String host;
-  int port;
+  late PlexAuthorization _auth;
+  List<PlexResource>? resources;
+
+  String? host;
+  int? port;
+  String? scheme = 'http';
   PlexCredentials? credentials;
   PlexPinCredentials? pinCredentials;
   PlexHeaders headers;
 
   PlexConnection({
-    required this.host,
-    required this.port,
+    this.host,
+    this.port,
+    this.scheme,
     required this.credentials,
     required this.headers,
   }) {
@@ -33,13 +38,16 @@ class PlexConnection {
     );
   }
 
-  static Future<PlexConnection> withResource()
-
-  static Future<PlexConnection> withPin(String host, int port,
-      PlexPinCredentials pinCredentials, PlexHeaders headers) async {
+  static Future<PlexConnection> withPin(
+      {String? host,
+      int? port,
+      String? scheme,
+      required PlexPinCredentials pinCredentials,
+      required PlexHeaders headers}) async {
     var conn = PlexConnection._withPin(
         host: host,
         port: port,
+        scheme: scheme,
         pinCredentials: pinCredentials,
         headers: headers);
 
@@ -49,11 +57,48 @@ class PlexConnection {
   }
 
   PlexConnection._withPin({
-    required this.host,
-    required this.port,
+    this.host,
+    this.port,
+    this.scheme,
     required this.pinCredentials,
     required this.headers,
   });
+
+  Future<List<PlexResource>> getServerResources() async {
+    if (!authorized) {
+      throw UnknownPlexException(
+          'Trying to get resources without a connection');
+    }
+
+    var response = await http.get(
+      _resourceEndpoint,
+      headers: headers.toMap(),
+    );
+
+    dynamic result = json.decode(response.body);
+
+    resources = result != null
+        ? List.generate(
+            (result as List<dynamic>).length,
+            (index) => PlexResource.fromJson(
+              json: result[index],
+            ),
+          ).where((e) => e.provides!.contains('server')).toList()
+        : List.empty();
+
+    return resources!;
+  }
+
+  void setDefaultResourceConnection(PlexResource resource) {
+    var connection = resource.connections!
+        .indexWhere((r) => r.address == resource.publicAddress);
+    setResourceConnection(resource.connections![connection]);
+  }
+
+  void setResourceConnection(PlexResourceConnection resourceConnection) {
+    host = resourceConnection.address;
+    port = resourceConnection.port;
+  }
 
   Future<void> _setPinAuth() async {
     _auth = await PlexAuthorization.pinAuthorization(headers);
@@ -70,7 +115,7 @@ class PlexConnection {
   bool get authorized => _auth.authorized && headers.token != null;
 
   Uri get requestUri => Uri(
-        scheme: 'http',
+        scheme: scheme,
         host: host,
         port: port,
       );

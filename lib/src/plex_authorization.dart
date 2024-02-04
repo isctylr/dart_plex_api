@@ -6,7 +6,7 @@ import 'package:dart_plex_api/dart_plex_api.dart';
 class PlexAuthorization {
   // For getting a user via user/pw
   final Uri _authEndpoint = Uri.https('plex.tv', '/users/sign_in.json');
-  // For getting a user with a woken
+  // For getting a user with a token
   final Uri _userEndpoint = Uri.https('plex.tv', '/api/v2/user');
 
   PlexCredentials? credentials;
@@ -60,7 +60,7 @@ class PlexAuthorization {
       var token = await pinCredentials!.getToken(headers);
       headers.token = token;
 
-      var response = await http.post(
+      var response = await http.get(
         _userEndpoint,
         headers: headers.toMap(),
       );
