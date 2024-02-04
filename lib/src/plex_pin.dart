@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:dart_plex_api/dart_plex_api.dart';
 
 class PlexPinCredentials {
-  late String pinId;
+  late int pinId;
   late String pinCode;
 
   late String token;
