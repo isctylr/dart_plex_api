@@ -43,9 +43,10 @@ class PlexPinCredentials {
     return this;
   }
 
-  Future<String> getToken(PlexHeaders headers) async {
+  /// Checks plex.tv for [token], which will be null if no sign in has been made yet.
+  Future<String?> getToken(PlexHeaders headers) async {
     if (token != null && headers.token == token) {
-      return token!;
+      return token;
     }
     Uri tokenEndpoint = Uri.https('plex.tv', 'api/v2/pins/$pinId');
 
@@ -67,6 +68,6 @@ class PlexPinCredentials {
 
     token = result['authToken'];
 
-    return token!;
+    return token;
   }
 }

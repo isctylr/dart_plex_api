@@ -112,6 +112,12 @@ class PlexConnection {
     return this;
   }
 
+  PlexPinCredentials? get pinCredentials => _auth.pinCredentials;
+
+  String get pinSignInUrl => (pinCredentials != null)
+      ? 'https://app.plex.tv/auth/?clientID=dd29f2fc-76ac-11ee-b962-0242ac120003&code=${_auth.pinCredentials!.pinCode}'
+      : '';
+
   bool get authorized => _auth.authorized && headers.token != null;
 
   Uri get requestUri => Uri(
