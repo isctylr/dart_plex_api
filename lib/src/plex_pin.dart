@@ -7,7 +7,7 @@ class PlexPinCredentials {
   late int pinId;
   late String pinCode;
 
-  late String token;
+  String? token;
 
   final Uri _genPinEndpoint =
       Uri.https('plex.tv', '/api/v2/pins.json', {'strong': 'true'});
@@ -44,8 +44,8 @@ class PlexPinCredentials {
   }
 
   Future<String> getToken(PlexHeaders headers) async {
-    if (headers.token == token) {
-      return token;
+    if (token != null && headers.token == token) {
+      return token!;
     }
     Uri tokenEndpoint = Uri.https('plex.tv', 'api/v2/pins/$pinId');
 
@@ -67,6 +67,6 @@ class PlexPinCredentials {
 
     token = result['authToken'];
 
-    return token;
+    return token!;
   }
 }
