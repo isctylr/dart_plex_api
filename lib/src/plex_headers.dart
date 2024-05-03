@@ -75,29 +75,21 @@ class PlexHeaders {
   //     this.token = token;
 
   // Use user or token auth
-  Map<String, String> toMap() => authorization != null
-      ? {
-          'X-Plex-Platform': platform,
-          'X-Plex-Platform-Version': platformVersion,
-          'X-Plex-Provides': provides,
-          'X-Plex-Client-Identifier': clientIdentifier,
-          'X-Plex-Product': product,
-          'X-Plex-Version': version,
-          'X-Plex-Device': device,
-          'X-Plex-Container-Size': containerSize,
-          'Accept': accept,
-          'Authorization': authorization!,
-        }
-      : {
-          'X-Plex-Platform': platform,
-          'X-Plex-Platform-Version': platformVersion,
-          'X-Plex-Provides': provides,
-          'X-Plex-Client-Identifier': clientIdentifier,
-          'X-Plex-Product': product,
-          'X-Plex-Version': version,
-          'X-Plex-Device': device,
-          'X-Plex-Container-Size': containerSize,
-          'X-Plex-Token': token ?? '',
-          'Accept': accept,
-        };
+  Map<String, String> toMap() {
+    var map = {
+      'X-Plex-Platform': platform,
+      'X-Plex-Platform-Version': platformVersion,
+      'X-Plex-Provides': provides,
+      'X-Plex-Client-Identifier': clientIdentifier,
+      'X-Plex-Product': product,
+      'X-Plex-Version': version,
+      'X-Plex-Device': device,
+      'X-Plex-Container-Size': containerSize,
+      'X-Plex-Token': token ?? '',
+      'Accept': accept,
+      'Authorization': authorization ?? '',
+    };
+    map.removeWhere((_, val) => val == '');
+    return map;
+  }
 }

@@ -8,8 +8,8 @@ class PlexResource {
   final List<String>? provides;
   final String? publicAddress;
   final String? accessToken;
-  final String? relay;
-  final String? httpsRequired;
+  final bool? relay;
+  final bool? httpsRequired;
   late final List<PlexResourceConnection>? connections;
 
   PlexResource({
@@ -57,9 +57,9 @@ class PlexResourceConnection {
   final String address;
   final int port;
   final String uri;
-  final String local;
-  final String relay;
-  final String? IPv6;
+  final bool local;
+  final bool relay;
+  final bool? IPv6;
 
   PlexResourceConnection(
       {required this.protocol,

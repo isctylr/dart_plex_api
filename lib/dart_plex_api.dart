@@ -56,4 +56,5 @@ export 'src/media_type/plex_playlist_item.dart';
 export 'src/exception/invalid_credentials_exception.dart';
 export 'src/exception/missing_headers_exception.dart';
 export 'src/exception/unknown_media_type_exception.dart';
+export 'src/exception/no_sign_in_on_pin.dart';
 export 'src/exception/unknown_exception.dart';

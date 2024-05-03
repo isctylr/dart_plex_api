@@ -37,9 +37,6 @@ class PlexPinCredentials {
       throw UnknownPlexException(error.toString());
     }
 
-    pinId = result['id'];
-    pinCode = result['code'];
-
     return this;
   }
 
@@ -53,17 +50,21 @@ class PlexPinCredentials {
     var _headers = headers.toMap();
     _headers = {..._headers, 'code': pinCode};
 
-    var response = await http.post(
+    var response = await http.get(
       tokenEndpoint,
       headers: _headers,
     );
 
     dynamic result = json.decode(response.body);
 
-    var error = result['error'];
+    var errors = result['errors'];
 
-    if (error != null) {
-      throw UnknownPlexException(error.toString());
+    if (errors != null) {
+      throw UnknownPlexException(errors[0].message.toString());
+    }
+
+    if (result['authToken'] == null) {
+      throw NoSignInOnPinPlexException('No sign in yet.');
     }
 
     token = result['authToken'];

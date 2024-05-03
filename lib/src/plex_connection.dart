@@ -98,15 +98,16 @@ class PlexConnection {
   void setResourceConnection(PlexResourceConnection resourceConnection) {
     host = resourceConnection.address;
     port = resourceConnection.port;
+    scheme = resourceConnection.protocol;
   }
 
+  /// Returns [true] when token was saved in local storage
   Future<void> _setPinAuth() async {
     _auth = await PlexAuthorization.pinAuthorization(headers);
   }
 
   Future<PlexConnection> authorize() async {
     dynamic user = await _auth.authorize();
-
     headers.token = user['authToken'] ?? user['authentication_token'];
 
     return this;
@@ -115,7 +116,7 @@ class PlexConnection {
   PlexPinCredentials? get pinCredentials => _auth.pinCredentials;
 
   String get pinSignInUrl => (pinCredentials != null)
-      ? 'https://app.plex.tv/auth/?clientID=dd29f2fc-76ac-11ee-b962-0242ac120003&code=${_auth.pinCredentials!.pinCode}'
+      ? 'https://app.plex.tv/auth/#?clientID=dd29f2fc-76ac-11ee-b962-0242ac120003&code=${_auth.pinCredentials!.pinCode}'
       : '';
 
   bool get authorized => _auth.authorized && headers.token != null;
@@ -126,12 +127,16 @@ class PlexConnection {
         port: port,
       );
 
-  Future<dynamic> requestJson(String route) async =>
-      json.decode((await http.get(
-        requestUri.replace(path: route),
-        headers: headers.toMap(),
-      ))
-          .body);
+  Future<dynamic> requestJson(String route) async {
+    print('Requested json from ${requestUri.replace(path: route)}');
+    print('headers: ${headers.toMap().toString()}');
+
+    return json.decode((await http.get(
+      requestUri.replace(path: route),
+      headers: headers.toMap(),
+    ))
+        .body);
+  }
 
   Future<http.Response> requestRaw(String route) async => await http.get(
         requestUri.replace(path: route),

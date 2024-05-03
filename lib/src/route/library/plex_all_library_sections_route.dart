@@ -17,7 +17,7 @@ class PlexAllLibrarySectionsRoute extends PlexRoute {
   @override
   Future<List<PlexObject>> request() async {
     var index = await indexRoute.request();
-    var sections = List<PlexObject>.empty();
+    var sections = List<PlexObject>.empty(growable: true);
 
     if (index.directory != null) {
       await Future.forEach(

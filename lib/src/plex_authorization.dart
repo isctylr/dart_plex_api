@@ -67,10 +67,10 @@ class PlexAuthorization {
 
       dynamic result = json.decode(response.body);
 
-      var error = result['error'];
+      var errors = result['errors'];
 
-      if (error != null) {
-        throw getException(error);
+      if (errors != null) {
+        throw getException(errors[0].message.toString());
       }
 
       _user = result;
@@ -91,6 +91,8 @@ class PlexAuthorization {
         return InvalidCredentialsPlexException(msg);
       case 'Plex client headers are required':
         return MissingHeadersPlexException(msg);
+      case 'Code not found or expired':
+        return InvalidCredentialsPlexException(msg);
       default:
         return UnknownPlexException(msg);
     }
